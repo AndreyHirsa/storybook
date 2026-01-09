@@ -1,6 +1,6 @@
 import styles from "./Button.module.css";
 
-interface ButtonProps {
+export interface ButtonProps {
   label: string;
   primary?: boolean;
   size?: "small" | "medium" | "large";

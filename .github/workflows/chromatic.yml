@@ -1,25 +1,26 @@
+name: 'UI Tests and Chromatic'
 
-# Workflow name
-name: 'Chromatic Deployment'
-
-# Event for the workflow
 on: push
 
-# List of jobs
 jobs:
-  chromatic:
-    name: 'Run Chromatic'
+  test-and-deploy:
+    name: 'Run Tests and Chromatic'
     runs-on: ubuntu-latest
-    # Job steps
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: yarn
-        #👇 Adds Chromatic as a step in the workflow
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Vitest
+        run: yarn test
+
       - uses: chromaui/action@latest
-        # Options required for Chromatic's GitHub Action
         with:
-          #👇 Chromatic projectToken, see https://storybook.js.org/tutorials/intro-to-storybook/react/en/deploy/ to obtain it
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
